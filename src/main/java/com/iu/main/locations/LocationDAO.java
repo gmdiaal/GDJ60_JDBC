@@ -4,27 +4,61 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 import com.iu.main.util.DBconnection;
 
 public class LocationDAO {
 	
-	public void getDetail(int location_id) throws Exception {
+	public ArrayList<LocationDTO> getFind(String search) throws Exception{
+		LocationDTO locationDTO;
+		ArrayList<LocationDTO> ar = new ArrayList<LocationDTO>();
+		Connection connection = DBconnection.getConnection();
+		String sql = "SELECT * FROM LOCATIONS WHERE STREET_ADDRESS LIKE ?";
+		PreparedStatement st = connection.prepareCall(sql);
+		st.setString(1, "%"+search+"%");
+		//"%"+search+"%" //'%?%' --> '%'?'%' 자동으로'를 붙임...
+		ResultSet rs = st.executeQuery();
+		while(rs.next()) {
+			locationDTO = new LocationDTO();
+			locationDTO.setLOCATION_ID(rs.getInt("LOCATION_ID"));
+			locationDTO.setSTREET_ADDRESS(rs.getString("STREET_ADDRESS"));
+			locationDTO.setCITY(rs.getString("CITY"));
+			locationDTO.setSTATE_PROVINCE(rs.getString("STATE_PROVINCE"));
+			locationDTO.setCOUNTRY_ID(rs.getString("COUNTRY_ID"));
+			ar.add(locationDTO);
+		}
+			return ar;
+		
+	}
+	
+	public LocationDTO getDetail(int location_id) throws Exception {
 		Connection connection = DBconnection.getConnection();
 		String sql ="SELECT * FROM LOCATIONS WHERE LOCATION_ID=?";
 		PreparedStatement st = connection.prepareStatement(sql);
 		st.setInt(1, location_id);
 		ResultSet rs = st.executeQuery();
+		
+		LocationDTO locationDTO = null;
+		
 		if(rs.next()) {
-			System.out.println(rs.getInt("LOCATION_ID"));
-			System.out.println(rs.getString("STREET_ADDRESS"));
-			System.out.println(rs.getString("CITY"));
-			System.out.println(rs.getString("STATE_PROVINCE"));
-			System.out.println(rs.getString("COUNTRY_ID"));
-		}else {System.out.println("없음");}
+			locationDTO = new LocationDTO();
+			locationDTO.setLOCATION_ID(rs.getInt("LOCATION_ID"));
+			locationDTO.setSTREET_ADDRESS(rs.getString("STREET_ADDRESS"));
+			locationDTO.setCITY(rs.getString("CITY"));
+			locationDTO.setSTATE_PROVINCE(rs.getString("STATE_PROVINCE"));
+			locationDTO.setCOUNTRY_ID(rs.getString("COUNTRY_ID"));
+		}
+		DBconnection.disConnect(connection, st, rs);
+		return locationDTO;
+		
+		
 	}
 
-	public void getList () throws Exception {
+	public ArrayList<LocationDTO> getList () throws Exception {
+		LocationDTO locationDTO = new LocationDTO();
+		ArrayList<LocationDTO> ar = new ArrayList<LocationDTO>();
+		
 		//DBconnection dBconnection = new DBconnection();
 		Connection connection = DBconnection.getConnection();
 		//1. 접속 정보 준비
@@ -41,14 +75,16 @@ public class LocationDAO {
 		//6. 최종 전송
 		ResultSet rs = statement.executeQuery();
 		while(rs.next()) {
-			System.out.println(rs.getInt("LOCATION_ID"));
-			System.out.println(rs.getString("STREET_ADDRESS"));
-			System.out.println(rs.getString("CITY"));
-			System.out.println(rs.getString("STATE_PROVINCE"));
-			System.out.println(rs.getString("COUNTRY_ID"));
+			locationDTO.setLOCATION_ID(rs.getInt("LOCATION_ID"));
+			locationDTO.setSTREET_ADDRESS(rs.getString("STREET_ADDRESS"));
+			locationDTO.setCITY(rs.getString("CITY"));
+			locationDTO.setSTATE_PROVINCE(rs.getString("STATE_PROVINCE"));
+			locationDTO.setCOUNTRY_ID(rs.getString("COUNTRY_ID"));
+			ar.add(locationDTO);
 		}
 		//7. 연결해제
 		DBconnection.disConnect(connection, statement, rs);
 		//connection preparedstatement -- con.preparest..
+		return ar;
 	}
 }

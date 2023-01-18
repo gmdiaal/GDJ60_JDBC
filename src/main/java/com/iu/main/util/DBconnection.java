@@ -19,10 +19,10 @@ public class DBconnection {
 		String url="jdbc:oracle:thin:@localhost:1521/XEPDB1";
 		
 		//4. driver
-//		String driver = "oracle.jdbc.driver.OracleDriver"; //패키지-폴터-클라스 형태
-//		
-//		Class.forName(driver); //이름으로 클래스 타입을 만듬 
-//		//요즘에는 알아서 해줌.
+		String driver = "oracle.jdbc.driver.OracleDriver"; //패키지-폴터-클라스 형태
+		
+		Class.forName(driver); //이름으로 클래스 타입을 만듬 
+		//요즘에는 알아서 해줌.
 		///////////////////////////////////////////////////////////////////////
 
 		//2. DB접속 실행.

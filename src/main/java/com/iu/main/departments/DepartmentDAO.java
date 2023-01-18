@@ -10,7 +10,8 @@ import com.iu.main.util.DBconnection;
 
 public class DepartmentDAO {
 	
-	public void getDetail( int department_id ) throws Exception {
+	public DepartmentDTO getDetail( int department_id ) throws Exception {
+		DepartmentDTO departmentDTO = null;
 		Connection connection = DBconnection.getConnection();
 		String sql = "SELECT * FROM DEPARTMENTS WHERE DEPARTMENT_ID=?";
 		//preparedstatement 는 sql injection을 방어하기 위한 메서드. ?를 변수로 인식함, 미완성문
@@ -19,14 +20,15 @@ public class DepartmentDAO {
 		ResultSet rs = st.executeQuery();
 		
 		if(rs.next()) { //하나 아니면 안옴
-			System.out.println(rs.getInt("DEPARTMENT_ID"));
-			System.out.println(rs.getString("DEPARTMENT_NAME"));
-			System.out.println(rs.getInt("MANAGER_ID"));
-			System.out.println(rs.getInt("LOCATION_ID"));
-		}else {System.out.println("없음");}
+			departmentDTO = new DepartmentDTO();
+			departmentDTO.setDepartment_id(rs.getInt("DEPARTMENT_ID"));
+			departmentDTO.setDepartment_name(rs.getString("DEPARTMENT_NAME"));
+			departmentDTO.setManager_id(rs.getInt("MANAGER_ID"));
+			departmentDTO.setLocation_id(rs.getInt("LOCATION_ID"));
+		}
 		
 		DBconnection.disConnect(connection, st, rs);
-		
+		return departmentDTO;
 	}
 
 	public ArrayList<DepartmentDTO> getList () throws Exception {
