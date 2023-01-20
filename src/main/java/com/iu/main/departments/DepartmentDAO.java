@@ -4,11 +4,59 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.iu.main.util.DBconnection;
 
 public class DepartmentDAO {
+	
+	//update
+	public int updateData (DepartmentDTO departmentDTO) throws Exception {
+		Connection connection = DBconnection.getConnection();
+		String sql = "UPDATE DEPARTMENTS SET DEPARTMENT_NAME=?, MANAGER_ID=?, LOCATION_ID=? "
+				+ "WHERE DEPARTMENT_ID=?";
+		PreparedStatement st = connection.prepareStatement(sql);
+		st.setString(1, departmentDTO.getDepartment_name());
+		st.setInt(2, departmentDTO.getManager_id());
+		st.setInt(3, departmentDTO.getLocation_id());
+		st.setInt(4, departmentDTO.getDepartment_id());
+		int result = st.executeUpdate();
+		
+		DBconnection.disConnect(st, connection);
+		
+		return result;
+	}
+	//del
+	public int delData (DepartmentDTO dto) throws Exception{
+		Connection connection = DBconnection.getConnection();
+		String sql = "DELETE DEPARTMENTS WHERE DEPARTMENT_ID=?";
+		PreparedStatement st = connection.prepareStatement(sql);
+		st.setInt(1, dto.getDepartment_id());
+		int result = st.executeUpdate();
+		
+		DBconnection.disConnect(st, connection);
+		
+		return result;
+	}
+	//insert
+	public int setData (DepartmentDTO departmentDTO) throws Exception {
+		Connection connection = DBconnection.getConnection();
+		
+		String sql = "INSERT INTO DEPARTMENTS (DEPARTMENT_ID, DEPARTMENT_NAME, MANAGER_ID, LOCATION_ID)"
+				+ " VALUES( DEPARTMENTS_SEQ.NEXTVAL, ?, ?, ?)";
+		PreparedStatement st = connection.prepareCall(sql);
+		st.setString(1, departmentDTO.getDepartment_name());
+		st.setInt(2, departmentDTO.getManager_id());
+		st.setInt(3, departmentDTO.getLocation_id());
+		
+		int result = st.executeUpdate(); //인서트, 업데이트, 딜리트 포함 //반환값 int 
+		
+		DBconnection.disConnect(st, connection);
+		
+		return result;
+		
+	}
 	
 	public DepartmentDTO getDetail( int department_id ) throws Exception {
 		DepartmentDTO departmentDTO = null;

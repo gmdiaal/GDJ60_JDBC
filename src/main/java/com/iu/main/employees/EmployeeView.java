@@ -19,7 +19,6 @@ public class EmployeeView {
 	}
 	
 	public void view (EmployeeDTO dto) {
-		System.out.println(dto.getEmail());
 		System.out.println(dto.getCommision_pct());
 		System.out.println(    dto.getDepartment_id());
 		System.out.println(    dto.getEmail());

@@ -9,6 +9,47 @@ import java.util.ArrayList;
 import com.iu.main.util.DBconnection;
 
 public class LocationDAO {
+	//update
+	public int updateData(LocationDTO dto) throws Exception{
+		Connection connection = DBconnection.getConnection();
+		String sql = "UPDATE LOCATIONS SET STREET_ADDRESS=?, POSTAL_CODE=? WHERE LOCATION_ID=?";
+		PreparedStatement st = connection.prepareStatement(sql);
+		st.setString(1, dto.getSTREET_ADDRESS());
+		st.setString(2, dto.getPOSTAL_CODE());
+		st.setInt(3, dto.getLOCATION_ID());
+		int result = st.executeUpdate();
+		
+		DBconnection.disConnect(st, connection);
+		
+		return result;
+	}
+	
+	//del
+	public int delData(LocationDTO dto) throws Exception {
+		Connection connection = DBconnection.getConnection();
+		String sql = "DELETE LOCATIONS WHERE LOCATION_ID=?";
+		PreparedStatement st = connection.prepareStatement(sql);
+		st.setInt(1, dto.getLOCATION_ID());
+		int result = st.executeUpdate();
+		
+		DBconnection.disConnect(st, connection);
+		
+		return result;
+	}
+	//insert
+	public int setData (LocationDTO dto) throws Exception {
+		Connection connection = DBconnection.getConnection();
+		String sql = "INSERT INTO LOCATIONS (LOCATION_ID, STREET_ADDRESS, POSTAL_CODE, CITY, STATE_PROVINCE, COUNTRY_ID) "
+				+ "VALUES(LOCATIONS_SEQ.NEXTVAL, ?, 'costaltest', 'citytest', 'statetest', ?)";
+		PreparedStatement st = connection.prepareStatement(sql);
+		st.setString(1, dto.getSTREET_ADDRESS());
+		st.setString(2, dto.getCOUNTRY_ID());
+		int result = st.executeUpdate();
+		
+		DBconnection.disConnect(st, connection);
+		
+		return result;//임시
+	}
 	
 	public ArrayList<LocationDTO> getFind(String search) throws Exception{
 		LocationDTO locationDTO;

@@ -3,10 +3,10 @@ package com.iu.main.locations;
 public class LocationDTO {
 	private Integer LOCATION_ID;
 	private String STREET_ADDRESS;
+	private String POSTAL_CODE;
 	private String CITY;
 	private String STATE_PROVINCE;
 	private String COUNTRY_ID;
-	
 	public Integer getLOCATION_ID() {
 		return LOCATION_ID;
 	}
@@ -18,6 +18,12 @@ public class LocationDTO {
 	}
 	public void setSTREET_ADDRESS(String sTREET_ADDRESS) {
 		STREET_ADDRESS = sTREET_ADDRESS;
+	}
+	public String getPOSTAL_CODE() {
+		return POSTAL_CODE;
+	}
+	public void setPOSTAL_CODE(String pOSTAL_CODE) {
+		POSTAL_CODE = pOSTAL_CODE;
 	}
 	public String getCITY() {
 		return CITY;

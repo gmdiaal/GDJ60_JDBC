@@ -35,6 +35,10 @@ public class DBconnection {
 		
 	}
 	
+	public static void disConnect(PreparedStatement st, Connection con) throws Exception {
+		st.close(); //null.close() 발생 가능 -> exception
+		con.close();
+	}
 	public static void disConnect(Connection con, PreparedStatement ps, ResultSet rs) throws Exception {
 		rs.close();
 		ps.close();
