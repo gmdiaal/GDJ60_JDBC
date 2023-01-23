@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import com.iu.main.util.DBconnection;
@@ -13,7 +14,10 @@ import com.iu.main.util.DBconnection;
 public class EmployeeDAO {
 	
 	//월급의 평균
-	public Double[] getAvg() throws Exception {
+	public HashMap<String, Double> getAvg() throws Exception {
+		
+		HashMap<String, Double> map = new HashMap<String, Double>();
+		
 		Connection connection = DBconnection.getConnection();
 		
 		String sql = "SELECT AVG(SALARY)+100 AS A, SUM(SALARY) FROM EMPLOYEES";
@@ -28,10 +32,16 @@ public class EmployeeDAO {
 //		System.out.println(rs.getDouble("A"));
 //		System.out.println(rs.getDouble(2));
 		
-		DBconnection.disConnect(st, connection);
+		//1. List, Array
+		//2. DTO(class)	
+		//3. map(key, value)
+		map.put("avg", rs.getDouble("A"));
+		map.put("sum", rs.getDouble(2));
 		
-		Double [] result = {rs.getDouble("A"), rs.getDouble(2) };
-		return result;
+		
+		//Double [] result = {rs.getDouble("A"), rs.getDouble(2) };
+		DBconnection.disConnect(st, connection);
+		return map;
 	}
 	
 	//1. 사원정보리스트
@@ -120,9 +130,11 @@ public class EmployeeDAO {
 		Connection connection = DBconnection.getConnection();
 		
 		String sql = "INSERT INTO EMPLOYEES (EMPLOYEE_ID, LAST_NAME, EMAIL, HIRE_DATE, JOB_ID) "
-				+ "VALUES(EMPLOYEES_SEQ.NEXTVAL, ?, 'TestEmail', sysdate, 'test' )";
+				+ "VALUES(EMPLOYEES_SEQ.NEXTVAL, ?, ?, TO_DATE(?), 'test' )";
 		PreparedStatement st = connection.prepareStatement(sql);
 		st.setString(1, dto.getLast_name());
+		st.setString(2, dto.getEmail());
+		st.setString(3, "2022-11-12");
 		int result = st.executeUpdate();
 		
 		DBconnection.disConnect(st, connection);
@@ -140,8 +152,15 @@ public class EmployeeDAO {
 	//6. update
 	public int setUpdate(EmployeeDTO dto) throws Exception {
 		Connection connection = DBconnection.getConnection();
-		//String sql = "UPDATE EMPLOYEES SET "
-		return 0;
+		String sql = "UPDATE EMPLOYEES SET FIRST_NAME=?, LAST_NAME=? WHERE EMPLOYEE_ID=?";
+		PreparedStatement st = connection.prepareStatement(sql);
+		st.setString(1, dto.getFirst_name());
+		st.setString(2, dto.getLast_name());
+		st.setInt(3, dto.getEmployee_id());
+		int result = st.executeUpdate();
+		
+		DBconnection.disConnect(st, connection);
+		return result;
 	}
 	
 }

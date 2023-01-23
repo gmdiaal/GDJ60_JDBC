@@ -16,19 +16,19 @@ public class JDBCMain {
 
 	public static void main(String[] args) {
 		System.out.println("start");
-		DepartmentController dc = new DepartmentController();
-		LocationController lc = new LocationController();
-		EmployeeController ec = new EmployeeController();
-		
-		EmployeeDAO dao = new EmployeeDAO();
-		
+//		DepartmentController dc = new DepartmentController();
+//		LocationController lc = new LocationController();
+//		EmployeeController ec = new EmployeeController();
+//		
+//		EmployeeDAO dao = new EmployeeDAO();
+		FrontContoller fo = new FrontContoller();
 		try {
 			
-			Double [] result = dao.getAvg();
+			// = dao.getAvg();
 //			System.out.println(result[0]);
 //			System.out.println(result[1]);
 			
-			//ec.start();
+			fo.start();
 			
 //			DepartmentDTO departmentDTO = new DepartmentDTO();
 //			departmentDTO.setDepartment_id(280);

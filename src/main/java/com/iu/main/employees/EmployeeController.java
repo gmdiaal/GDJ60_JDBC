@@ -52,9 +52,10 @@ public class EmployeeController {
 					menu = dao.setDelete(dto);
 					if(menu>0) {System.out.println("삭제 성공");}else {System.out.println("삭제 실패");}
 					break;
-				case 6:
+				case 6: //update 미완
 					dto = employeeInput.inputUpdate();
-					//dao.
+					menu = dao.setUpdate(dto);
+					if(menu>0) {System.out.println("수정 성공");}else {System.out.println("수정 실패");}
 				default: check=false;
 					
 			}
