@@ -20,6 +20,8 @@ public class EmployeeController {
 			int menu = sc.nextInt();
 			switch(menu) {
 				case 1:
+					ar = dao.getEmployees();
+					view.view(ar);
 					break;
 				case 2:
 					System.out.println("찾을 ID 입력");
