@@ -1,5 +1,9 @@
 package com.iu.main.departments;
 
+import java.util.ArrayList;
+
+import com.iu.main.employees.EmployeeDTO;
+
 public class DepartmentDTO {
 	//DTO
 	//모든 멤버변수의 접근지정자는 private
@@ -14,7 +18,14 @@ public class DepartmentDTO {
 	private Integer manager_id;
 	private Integer location_id;
 	
+	ArrayList<EmployeeDTO> employeeDTOs;
 	
+	public ArrayList<EmployeeDTO> getEmployeeDTOs() {
+		return employeeDTOs;
+	}
+	public void setEmployeeDTOs(ArrayList<EmployeeDTO> employeeDTOs) {
+		this.employeeDTOs = employeeDTOs;
+	}
 	public Integer getDepartment_id() {
 		return department_id;
 	}
